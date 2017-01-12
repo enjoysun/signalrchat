@@ -1,0 +1,38 @@
+﻿@model WebApplication1.Models.RoomInfo
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <table class="roomtable">
+            <thead>
+                <tr>
+                    <td>房间名</td>
+                    <td>Sort</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.TextBoxFor(c => c.Roomname)</td>
+                    <td>
+                        @Html.DropDownList("sort", new SelectList(ViewBag.sort))
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="创建房间"/></td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</body>
+</html>

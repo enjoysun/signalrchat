@@ -1,0 +1,101 @@
+﻿@model List<WebApplication1.Models.RoomInfo>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script type="text/javascript">
+        Date.prototype.Format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1, //月份
+                "d+": this.getDate(), //日
+                "h+": this.getHours(), //小时
+                "m+": this.getMinutes(), //分
+                "s+": this.getSeconds(), //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds() //毫秒
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+        var roomid;
+        var conn = $.connection("/myconn");
+        $(function () {
+            conn.logging = true;
+            //transport参数指定连接方式
+            //conn.start({ transport: "serverSentEvents" }, function (data) {
+
+            //})
+            conn.start().done(function () {
+                document.getElementById("but-test").addEventListener("click", function () {
+                    var message = $("#txt").val();
+                    conn.send("{rid:" + roomid + ",sort:\"sendmessage\",data:\"" + message + "\",uid:@ViewBag.uid}");
+                    $("#IM").append("<span>wo--"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</span><br /><span>" + message + "</span><br />");
+                    $("#txt").val("");
+                })
+            })
+            conn.received(function (data) {
+                $
+                var jsondata = JSON.parse(data);
+                $("#IM").append("<span>" + jsondata.sendpeo+"--"+jsondata.sendtime + "</span><br /><span>" + jsondata.data + "</span><br />");
+            })
+
+            conn.error(function (data) {
+                alert(data);
+            })
+            //网络慢注册事件
+            conn.connectionSlow(function (data) {
+
+            })
+        })
+
+        function joinroom(rid) {
+            roomid = rid;
+            conn.send("{rid:" + rid + ",sort:\"connectioned\",data:\"\",uid:@ViewBag.uid}");
+        }
+    </script>
+
+</head>
+<body>
+    <table class="roomtable">
+        <thead>
+            <tr>
+                <td>房间号</td>
+                <td>房间名</td>
+                <td>master</td>
+                <td>Sort</td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.Roomname</td>
+                    <td>@item.Master</td>
+                    <td>@item.sort</td>
+                    <td><a href="#" onclick="joinroom(@item.ID);">加入</a></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    @Html.ActionLink("新建房间", "Index", "Room", new { uid = ViewBag.uid }, null)
+    <hr />
+    <div id="IM">
+    </div>
+    <input type="text" id="txt" />
+    <input type="button" value="发送" id="but-test" />
+
+</body>
+</html>

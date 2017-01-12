@@ -1,0 +1,38 @@
+﻿@model WebApplication1.Models.UserInfo
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <table class="roomtable">
+
+            <tbody>
+                <tr>
+                    <td>nickname</td>
+                    <td>@Html.TextBoxFor(c => c.Nickname)</td>
+                </tr>
+                <tr>
+                    <td>realname</td>
+                    <td>@Html.TextBoxFor(c => c.Realname)</td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Login" />
+                        @Html.ActionLink("注册", "Index", "Userinfo")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</body>
+</html>

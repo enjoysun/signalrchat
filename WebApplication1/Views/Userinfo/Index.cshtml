@@ -1,0 +1,52 @@
+﻿@model WebApplication1.Models.UserInfo
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken();
+        <table class="table">
+
+            <tr>
+                <th><label>昵称:</label></th>
+                <th>@Html.TextBoxFor(c => c.Nickname)</th>
+            </tr>
+            <tr>
+                <th><label>昵称:</label></th>
+                <th>@Html.TextBoxFor(c => c.Realname)</th>
+            </tr>
+            <tr>
+                <th><input type="submit" value="注册" /></th>
+            </tr>
+        </table>
+    }
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script type="text/javascript">
+        //$('#form1').submit(function () {
+        //    if ($(this).valid()) {
+        //        $.ajax({
+        //            url: this.action,
+        //            type: this.method,
+        //            data: $(this).serialize(),
+        //            success: function (result) {
+        //            },
+        //            error: function (result) {
+        //                alert(result);
+        //            }
+        //        });
+        //    }
+        //    return false;
+        //});
+    </script>
+</body>
+</html>
