@@ -9,10 +9,28 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .createdanmuBody {
+            position: relative;
+            display:inline-block;
+        }
+
+        .divcreate {
+            display:inline-block;
+            position: absolute;
+        }
+    </style>
+    <link href="~/Content/barrager.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.1.js"></script>
+    <script src="~/Scripts/jquery.barrager.js"></script>
     <script type="text/javascript">
-        Date.prototype.Format = function (fmt) { //author: meizz
+        Date.prototype.Format = function (fmt) {
             var o = {
                 "M+": this.getMonth() + 1, //月份
                 "d+": this.getDate(), //日
@@ -39,14 +57,35 @@
                 document.getElementById("but-test").addEventListener("click", function () {
                     var message = $("#txt").val();
                     conn.send("{rid:" + roomid + ",sort:\"sendmessage\",data:\"" + message + "\",uid:@ViewBag.uid}");
-                    $("#IM").append("<span>wo--"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</span><br /><span>" + message + "</span><br />");
+                    $("#IM").append("<span>wo--" + new Date().Format("yyyy-MM-dd hh:mm:ss") + "</span><br /><span>" + message + "</span><br />");
                     $("#txt").val("");
+                    var item = {
+                        //img: 'static/heisenberg.png', //图片
+                        info: message, //文字
+                        //href: 'http://www.yaseng.org', //链接
+                        close: true, //显示关闭按钮
+                        speed: 6, //延迟,单位秒,默认6
+                        bottom: 0, //距离底部高度,单位px,默认随机
+                        color: getRandomColor(), //颜色,默认白色
+                        old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+                    };
+                    $('.createdanmuBody').barrager(item);
                 })
             })
             conn.received(function (data) {
-                $
                 var jsondata = JSON.parse(data);
-                $("#IM").append("<span>" + jsondata.sendpeo+"--"+jsondata.sendtime + "</span><br /><span>" + jsondata.data + "</span><br />");
+                $("#IM").append("<span>" + jsondata.sendpeo + "--" + jsondata.sendtime + "</span><br /><span>" + jsondata.data + "</span><br />");
+                var item = {
+                    //img: 'static/heisenberg.png', //图片
+                    info: jsondata.data, //文字
+                    //href: 'http://www.yaseng.org', //链接
+                    close: true, //显示关闭按钮
+                    speed: 6, //延迟,单位秒,默认6
+                    bottom: 0, //距离底部高度,单位0px,默认随机
+                    color: getRandomColor(), //颜色,默认白色
+                    old_ie_color: '#000000', //ie低版兼容色,不能与网页背景相同,默认黑色
+                };
+                $('.createdanmuBody').barrager(item);
             })
 
             conn.error(function (data) {
@@ -62,40 +101,53 @@
             roomid = rid;
             conn.send("{rid:" + rid + ",sort:\"connectioned\",data:\"\",uid:@ViewBag.uid}");
         }
+        //弹幕格式{ "text":"2333333" , "color":"#" ,"size":"1"，"time":60};
+        //获取随机颜色
+        function getRandomColor() {
+            return '#' + (function (h) {
+                return new Array(7 - h.length).join("0") + h
+            }
+                    )((Math.random() * 0x1000000 << 0).toString(16))
+        }
     </script>
 
 </head>
 <body>
-    <table class="roomtable">
-        <thead>
-            <tr>
-                <td>房间号</td>
-                <td>房间名</td>
-                <td>master</td>
-                <td>Sort</td>
-            </tr>
-        </thead>
-        <tbody>
+    <div style="width:100%;height:100%;">
+        <div class="createdanmuBody" style="background-color:black;height:500px;width:50%;">
+        </div>
+        <div class="divcreate" style="width:30%">
+            <table class="roomtable">
+                <thead>
+                    <tr>
+                        <td>房间号</td>
+                        <td>房间名</td>
+                        <td>master</td>
+                        <td>Sort</td>
+                    </tr>
+                </thead>
+                <tbody>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.ID</td>
-                    <td>@item.Roomname</td>
-                    <td>@item.Master</td>
-                    <td>@item.sort</td>
-                    <td><a href="#" onclick="joinroom(@item.ID);">加入</a></td>
-                </tr>
-            }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ID</td>
+                            <td>@item.Roomname</td>
+                            <td>@item.Master</td>
+                            <td>@item.sort</td>
+                            <td><a href="#" onclick="joinroom(@item.ID);">加入</a></td>
+                        </tr>
+                    }
 
-        </tbody>
-    </table>
-    @Html.ActionLink("新建房间", "Index", "Room", new { uid = ViewBag.uid }, null)
-    <hr />
-    <div id="IM">
+                </tbody>
+            </table>
+            @Html.ActionLink("新建房间", "Index", "Room", new { uid = ViewBag.uid }, null)
+            <hr />
+            <div id="IM">
+            </div>
+            <input type="text" id="txt" />
+            <input type="button" value="发送" id="but-test" />
+        </div>
     </div>
-    <input type="text" id="txt" />
-    <input type="button" value="发送" id="but-test" />
-
 </body>
 </html>
