@@ -1,17 +1,16 @@
 /*!
  *@name     jquery.barrager.js
  *@author   youming
- *@url      https://github.com/yaseng/jquery.barrager.js
  */
 //var item = {
-//    //img: 'static/heisenberg.png', //Í¼Æ¬
-//    info: jsondata.data, //ÎÄ×Ö
-//    //href: '', //Á´½Ó
-//    close: true, //ÏÔÊ¾¹Ø±Õ°´Å¥
-//    speed: 6, //ÑÓ³Ù,µ¥Î»Ãë,Ä¬ÈÏ6
-//    bottom: 0, //¾àÀëµ×²¿¸ß¶È,µ¥Î»0px,Ä¬ÈÏËæ»ú
-//    color: getRandomColor(), //ÑÕÉ«,Ä¬ÈÏ°×É«
-//    old_ie_color: '#000000', //ieµÍ°æ¼æÈİÉ«,²»ÄÜÓëÍøÒ³±³¾°ÏàÍ¬,Ä¬ÈÏºÚÉ«
+//    //img: 'static/heisenberg.png', //å›¾ç‰‡
+//    info: jsondata.data, //æ–‡å­—
+//    //href: '', //é“¾æ¥
+//    close: true, //æ˜¾ç¤ºå…³é—­æŒ‰é’®
+//    speed: 6, //å»¶è¿Ÿ,å•ä½ç§’,é»˜è®¤6
+//    bottom: 0, //è·ç¦»åº•éƒ¨é«˜åº¦,å•ä½0px,é»˜è®¤éšæœº
+//    color: getRandomColor(), //é¢œè‰²,é»˜è®¤ç™½è‰²
+//    old_ie_color: '#000000', //ieä½ç‰ˆå…¼å®¹è‰²,ä¸èƒ½ä¸ç½‘é¡µèƒŒæ™¯ç›¸åŒ,é»˜è®¤é»‘è‰²
 //};
 (function ($) {
 
